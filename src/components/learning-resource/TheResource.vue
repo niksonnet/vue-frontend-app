@@ -62,7 +62,7 @@ export default {
       this.selectedTab = tab;
     },
     addResources(resource) {
-      this.storedResources.push({
+      this.storedResources.unshift({
         id: new Date().toISOString(),
         title: resource.title,
         description: resource.desc,
@@ -72,11 +72,10 @@ export default {
       this.selectedTab = 'stored-resources';
     },
     deleteResource(id) {
-      debugger;
-      const resourceData = this.storedResources.filter(
+      const resourceIdx = this.storedResources.findIndex(
         (item) => item.id !== id
       );
-      this.storedResources = resourceData;
+      this.storedResources.splice(resourceIdx, 1);
     },
   },
 };
