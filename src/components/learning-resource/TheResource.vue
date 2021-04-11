@@ -9,7 +9,9 @@
       >Add new Resource
     </base-button>
   </base-card>
-  <component :is="selectedTab"></component>
+  <keep-alive>
+    <component :is="selectedTab"></component>
+  </keep-alive>
 </template>
 
 <script>
@@ -52,6 +54,7 @@ export default {
     return {
       resources: this.storedResources,
       addResources: this.addResources,
+      deleteResource: this.deleteResource,
     };
   },
   methods: {
@@ -67,6 +70,13 @@ export default {
       });
 
       this.selectedTab = 'stored-resources';
+    },
+    deleteResource(id) {
+      debugger;
+      const resourceData = this.storedResources.filter(
+        (item) => item.id !== id
+      );
+      this.storedResources = resourceData;
     },
   },
 };

@@ -1,8 +1,17 @@
 <template >
+  <base-dialog v-if="isFormValid" title="Invalid Input" @close="confirmError">
+    <template #default>
+      <p>Some inputs are empty</p>
+      <p>Please check</p>
+    </template>
+    <template #actions>
+      <base-button type="button" @click="confirmError"> Okay </base-button>
+    </template>
+  </base-dialog>
   <base-card>
     <h2>Add new resource</h2>
 
-    <form @submit.prevent>
+    <form @submit.prevent="">
       <div class="form-control">
         <label for="title">Title</label>
         <input type="text" ref="title" name="title" />
@@ -25,14 +34,34 @@
 <script>
 export default {
   inject: ['addResources'],
+  data() {
+    return {
+      isFormValid: false,
+    };
+  },
   methods: {
     submitData() {
+      const entryTitle = this.$refs.title.value;
+      const entryDesc = this.$refs.description.value;
+      const entryLink = this.$refs.link.value;
+
+      if (
+        entryTitle.trim() === '' ||
+        entryDesc.trim() === '' ||
+        entryLink.trim() === ''
+      ) {
+        this.isFormValid = true;
+        return;
+      }
       const formData = {
         title: this.$refs.title.value,
         desc: this.$refs.description.value,
         link: this.$refs.link.value,
       };
       this.addResources(formData);
+    },
+    confirmError() {
+      this.isFormValid = false;
     },
   },
 };
